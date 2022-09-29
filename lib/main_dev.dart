@@ -23,7 +23,7 @@ void main() async {
 
   try {
     FirebaseFirestore.instance.useFirestoreEmulator("localhost", 8080);
-    FirebaseAuth.instance.useAuthEmulator("localhost", 8082);
+    FirebaseAuth.instance.useAuthEmulator("localhost", 9099);
   } catch (error) {
     // throws a JavaScript object instead of a FirebaseException
     final String code = (error as dynamic).code;
