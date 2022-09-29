@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/tame_the_beast.iml" filepath="$PROJECT_DIR$/tame_the_beast.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/tame_the_beast_android.iml" filepath="$PROJECT_DIR$/android/tame_the_beast_android.iml" />
+    </modules>
+  </component>
+</project>
