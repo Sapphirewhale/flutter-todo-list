@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'Tame the Beast',
       scrollBehavior: AppScrollBehavior(),
       theme: ThemeData(
-        primarySwatch: InifiniteTheme.primary,
+        primarySwatch: TTBTheme.primary,
       ),
       home: const MyHomePage(title: 'Tame the Beast'),
     );
@@ -38,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(InifiniteTheme.name),
+        title: Text(TTBTheme.name),
       ),
       body: SafeArea(
         child: Center(
