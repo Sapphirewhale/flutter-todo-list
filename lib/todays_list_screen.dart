@@ -50,32 +50,24 @@ class TodaysListScreen extends StatelessWidget {
   }
 }
 
-class TodaysProgressDisplay extends StatefulWidget {
+class TodaysProgressDisplay extends StatelessWidget {
   List<TodoListItem> items;
   TodaysProgressDisplay({required this.items, Key? key}) : super(key: key);
 
   @override
-  State<TodaysProgressDisplay> createState() => _TodaysProgressDisplayState();
-}
-
-class _TodaysProgressDisplayState extends State<TodaysProgressDisplay> {
-  @override
   Widget build(BuildContext context) {
     Map<TodoListItemType, int> counts = {};
-    for (TodoListItemType type in TodoListItemType.values) {
-      counts[type] = 0;
-    }
-    for (TodoListItem item in widget.items.where(
+    for (TodoListItem item in items.where(
       (element) => element.isDone,
     )) {
-      counts[item.type] = counts[item.type]! + 1;
+      counts[item.type] = (counts[item.type] ?? 0) + 1;
     }
     bool first = true;
     List<Widget> children = [];
     for (TodoListItemType type in counts.keys) {
       bool last =
           type == counts.keys.where((element) => counts[element]! > 0).last &&
-              widget.items.where((element) => !element.isDone).length == 0;
+              items.where((element) => !element.isDone).length == 0;
       if (counts[type]! > 0) {
         children.add(
           Expanded(
@@ -100,7 +92,7 @@ class _TodaysProgressDisplayState extends State<TodaysProgressDisplay> {
         children: [
           ...children,
           Expanded(
-            flex: widget.items.where((element) => !element.isDone).length,
+            flex: items.where((element) => !element.isDone).length,
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.horizontal(
