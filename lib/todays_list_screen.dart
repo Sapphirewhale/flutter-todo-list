@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:tame_the_beast/auth_provider.dart';
 import 'package:tame_the_beast/models/todo_list_item.dart';
 import 'package:tame_the_beast/repositories/todo_list_item_repository.dart';
+import 'package:tame_the_beast/theme.dart';
 
 class TodaysListScreen extends StatelessWidget {
   const TodaysListScreen({Key? key}) : super(key: key);
@@ -33,7 +34,7 @@ class TodaysListScreen extends StatelessWidget {
                               element.type == TodoListItemType.single)
                           .toList()),
                   TodoListSection(
-                      type: TodoListItemType.single,
+                      type: TodoListItemType.bonus,
                       items: snapshot.data!
                           .where((element) =>
                               element.type == TodoListItemType.bonus)
@@ -101,16 +102,41 @@ class TodoListTitleDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: type.color,
+          borderRadius: BorderRadius.circular(10),
+        ),
         child: Row(
-      children: [
-        Text(type.name),
-        Container(child: Text(count.toString())),
-        InkWell(
-          child: Container(child: Text('+')),
-          onTap: () => addTodoListItem(context),
-        )
-      ],
-    ));
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              padding: EdgeInsets.all(7),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                color: TTBTheme.transparentWhite,
+              ),
+              child: SizedBox(width: 100, child: Align(child: Text(type.name))),
+            ),
+            Container(
+                padding: EdgeInsets.all(7),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: TTBTheme.transparentWhite,
+                ),
+                child: Text(count.toString())),
+            InkWell(
+              child: Container(
+                  padding: EdgeInsets.all(7),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: TTBTheme.transparentWhite,
+                  ),
+                  child: Text('+')),
+              onTap: () => addTodoListItem(context),
+            )
+          ],
+        ));
   }
 
   void addTodoListItem(BuildContext context) {
