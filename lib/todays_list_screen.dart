@@ -92,11 +92,10 @@ class TodoListItemDisplay extends StatelessWidget {
 }
 
 class TodoListTitleDisplay extends StatelessWidget {
-  final Color color;
-  final String title;
+  final TodoListItemType type;
   final int count;
   const TodoListTitleDisplay(
-      {required this.color, required this.title, required this.count, Key? key})
+      {required this.type, required this.count, Key? key})
       : super(key: key);
 
   @override
@@ -104,7 +103,7 @@ class TodoListTitleDisplay extends StatelessWidget {
     return Container(
         child: Row(
       children: [
-        Text(title),
+        Text(type.name),
         Container(child: Text(count.toString())),
         InkWell(
           child: Container(child: Text('+')),
@@ -155,8 +154,7 @@ class TodoListSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TodoListTitleDisplay(
-            color: type.color, title: type.name, count: items.length),
+        TodoListTitleDisplay(type: type, count: items.length),
         for (var item in items.where((element) => !element.isDone))
           TodoListItemDisplay(item: item),
         for (var item in items.where((element) =>
