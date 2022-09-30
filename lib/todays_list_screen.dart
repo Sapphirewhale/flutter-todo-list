@@ -12,8 +12,6 @@ class TodaysListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text("Today's List"),
-        TodaysProgressDisplay(),
         StreamBuilder<List<TodoListItem>>(
           stream: Get.find<TodoListItemRepository>()
               .getItems(Get.find<AuthProvider>().getUserId()),
@@ -21,6 +19,7 @@ class TodaysListScreen extends StatelessWidget {
             if (snapshot.hasData) {
               return Column(
                 children: [
+                  TodaysProgressDisplay(items: snapshot.data!),
                   TodoListSection(
                       type: TodoListItemType.frequent,
                       items: snapshot.data!
@@ -52,7 +51,8 @@ class TodaysListScreen extends StatelessWidget {
 }
 
 class TodaysProgressDisplay extends StatefulWidget {
-  const TodaysProgressDisplay({Key? key}) : super(key: key);
+  List<TodoListItem> items;
+  TodaysProgressDisplay({required this.items, Key? key}) : super(key: key);
 
   @override
   State<TodaysProgressDisplay> createState() => _TodaysProgressDisplayState();
@@ -61,7 +61,58 @@ class TodaysProgressDisplay extends StatefulWidget {
 class _TodaysProgressDisplayState extends State<TodaysProgressDisplay> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    Map<TodoListItemType, int> counts = {};
+    for (TodoListItemType type in TodoListItemType.values) {
+      counts[type] = 0;
+    }
+    for (TodoListItem item in widget.items.where(
+      (element) => element.isDone,
+    )) {
+      counts[item.type] = counts[item.type]! + 1;
+    }
+    bool first = true;
+    List<Widget> children = [];
+    for (TodoListItemType type in counts.keys) {
+      bool last =
+          type == counts.keys.where((element) => counts[element]! > 0).last &&
+              widget.items.where((element) => !element.isDone).length == 0;
+      if (counts[type]! > 0) {
+        children.add(
+          Expanded(
+            flex: counts[type]!,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.horizontal(
+                    left: first ? Radius.circular(30) : Radius.zero,
+                    right: last ? Radius.circular(30) : Radius.zero),
+                color: type.color,
+              ),
+            ),
+          ),
+        );
+        first = false;
+      }
+    }
+    return SizedBox(
+      height: 50,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          ...children,
+          Expanded(
+            flex: widget.items.where((element) => !element.isDone).length,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.horizontal(
+                    left: first ? Radius.circular(30) : Radius.zero,
+                    right: Radius.circular(30)),
+                color: Colors.grey.withOpacity(0.5),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
