@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tame_the_beast/login_screen.dart';
 import 'package:tame_the_beast/theme.dart';
+import 'package:tame_the_beast/todays_list_screen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -76,6 +77,8 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      child: TodaysListScreen(),
+    );
   }
 }
