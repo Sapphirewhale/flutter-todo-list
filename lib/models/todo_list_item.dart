@@ -142,3 +142,99 @@ extension TodoListItemTypeUtils on TodoListItemType {
     }
   }
 }
+
+abstract class Frequency {
+  List<int> startingTimes = [];
+  abstract FrequencyType type;
+
+  Frequency({required this.startingTimes});
+
+  DateTime getNextStartingTime();
+
+  Map<String, dynamic> toMap() {
+    final Map<String, dynamic> data = {};
+    data['type'] = type.toString();
+    data['startingTimes'] = startingTimes;
+    return data;
+  }
+
+  static Frequency fromMap(Map<String, dynamic> json) {
+    switch (FrequencyTypeUtils.fromString(json['type'])) {
+      case FrequencyType.daily:
+        return DailyFrequency(startingTimes: json['startingTimes']);
+      case FrequencyType.weekly:
+        return WeeklyFrequency(startingTimes: json['startingTimes']);
+      default:
+        throw Exception('Invalid type');
+    }
+  }
+}
+
+class DailyFrequency extends Frequency {
+  @override
+  FrequencyType type = FrequencyType.daily;
+
+  DailyFrequency({required List<int> startingTimes})
+      : super(startingTimes: startingTimes);
+
+  @override
+  DateTime getNextStartingTime() {
+    DateTime? nextStartingTime;
+    DateTime now = DateTime.now();
+    for (int startingTime in startingTimes) {
+      if (now.hour < startingTime) {
+        nextStartingTime = DateTime(now.year, now.month, now.day, startingTime);
+        break;
+      }
+    }
+    return nextStartingTime ??
+        DateTime(now.year, now.month, now.day + 1, startingTimes.first);
+  }
+}
+
+class WeeklyFrequency extends Frequency {
+  @override
+  FrequencyType type = FrequencyType.daily;
+
+  WeeklyFrequency({required List<int> startingTimes})
+      : super(startingTimes: startingTimes);
+
+  @override
+  DateTime getNextStartingTime() {
+    DateTime? nextStartingTime;
+    DateTime now = DateTime.now();
+    for (int startingTime in startingTimes) {
+      if (now.weekday < startingTime) {
+        nextStartingTime =
+            DateTime(now.year, now.month, getWeekStart(now) + startingTime);
+        break;
+      }
+    }
+    return nextStartingTime ??
+        DateTime(
+            now.year, now.month, getWeekStart(now) + 7 + startingTimes.first);
+  }
+
+  int getWeekStart(DateTime date) {
+    return date.day - (date.weekday - 1);
+  }
+}
+
+enum FrequencyType { daily, weekly }
+
+extension FrequencyTypeUtils on FrequencyType {
+  static FrequencyType fromString(String type) {
+    switch (type) {
+      case 'FrequencyType.daily':
+        return FrequencyType.daily;
+      case 'daily':
+        return FrequencyType.daily;
+      case 'FrequencyType.weekly':
+        return FrequencyType.weekly;
+      case 'weekly':
+        return FrequencyType.weekly;
+      default:
+        throw Exception('Invalid type');
+    }
+  }
+}
