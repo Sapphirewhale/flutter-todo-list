@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tame_the_beast/widgets/new_todo_list_item_display.dart';
 
 import '../auth_provider.dart';
 import '../models/todo_list_item.dart';
@@ -65,31 +66,11 @@ class TodoListTitleDisplay extends StatelessWidget {
       : super(key: key);
 
   void addTodoListItem(BuildContext context) {
-    TextEditingController controller = TextEditingController();
     showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            title: Text('Add Todo List Item'),
-            content: TextField(
-              controller: controller,
-              decoration: InputDecoration(hintText: 'Enter a title'),
-            ),
-            actions: [
-              TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text('Cancel')),
-              TextButton(
-                  onPressed: () {
-                    Get.find<TodoListItemRepository>()
-                        .saveItem(SingleTodoListItem(
-                      title: controller.text,
-                      appUserId: Get.find<AuthProvider>().getUserId(),
-                    ));
-                    Navigator.pop(context);
-                  },
-                  child: Text('Save')),
-            ],
+          return NewTodoListItemDisplay(
+            initialType: type,
           );
         });
   }
