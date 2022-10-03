@@ -5,6 +5,7 @@ abstract class TodoListItem {
   String id;
   String title;
   bool isDone;
+  DateTime startDate;
   DateTime? completionDate;
   String appUserId;
   abstract TodoListItemType type;
@@ -13,7 +14,8 @@ abstract class TodoListItem {
       {required this.title,
       required this.appUserId,
       this.isDone = false,
-      this.id = ''});
+      this.id = ''})
+      : startDate = DateTime.now();
 
   static TodoListItem fromMap(Map<String, dynamic> json) {
     switch (TodoListItemTypeUtils.fromString(json['type'])) {
@@ -35,7 +37,10 @@ abstract class TodoListItem {
         appUserId = json['appUserId'],
         completionDate = json['completionDate'] != null
             ? DateTime.parse(json['completionDate'])
-            : null;
+            : null,
+        startDate = json['startDate'] != null
+            ? DateTime.parse(json['startDate'])
+            : DateTime.now();
 
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = {};
@@ -45,6 +50,7 @@ abstract class TodoListItem {
     data['appUserId'] = appUserId;
     data['type'] = type.toString();
     data['completionDate'] = completionDate?.toIso8601String();
+    data['startDate'] = startDate.toIso8601String();
     return data;
   }
 

@@ -41,10 +41,10 @@ class TodoListItemRepository {
         .snapshots()
         .map((event) => event.docs
             .map((e) => TodoListItem.fromMap(e.data()))
-            .where((element) =>
-                element.completionDate == null ||
+            .where((element) => (element.completionDate == null ||
                 element.completionDate!
-                    .isAfter(DateTime(now.year, now.month, now.day)))
+                        .isAfter(DateTime(now.year, now.month, now.day)) &&
+                    element.startDate.isBefore(DateTime.now())))
             .toList(growable: false));
   }
 }
