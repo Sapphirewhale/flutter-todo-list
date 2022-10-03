@@ -32,7 +32,8 @@ class TodoListItemRepository {
         .data()!);
   }
 
-  Stream<List<TodoListItem>> getItems(String userId) {
+  Stream<List<TodoListItem>> getTodaysItems(String userId) {
+    DateTime now = DateTime.now();
     return firebase
         .collection('users')
         .doc(userId)
@@ -40,6 +41,10 @@ class TodoListItemRepository {
         .snapshots()
         .map((event) => event.docs
             .map((e) => TodoListItem.fromMap(e.data()))
+            .where((element) =>
+                element.completionDate == null ||
+                element.completionDate!
+                    .isAfter(DateTime(now.year, now.month, now.day)))
             .toList(growable: false));
   }
 }

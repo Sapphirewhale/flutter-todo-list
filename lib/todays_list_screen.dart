@@ -15,7 +15,7 @@ class TodaysListScreen extends StatelessWidget {
       children: [
         StreamBuilder<List<TodoListItem>>(
           stream: Get.find<TodoListItemRepository>()
-              .getItems(Get.find<AuthProvider>().getUserId()),
+              .getTodaysItems(Get.find<AuthProvider>().getUserId()),
           builder: ((context, snapshot) {
             if (snapshot.hasData) {
               return Column(
