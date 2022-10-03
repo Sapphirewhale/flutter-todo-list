@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:tame_the_beast/repositories/todo_list_item_repository.dart';
 
 abstract class TodoListItem {
   String id;
@@ -68,12 +70,30 @@ abstract class TodoListItem {
 class FrequentTodoListItem extends TodoListItem {
   @override
   TodoListItemType type = TodoListItemType.frequent;
+  Frequency frequency;
+  bool nextCreated = false;
 
-  FrequentTodoListItem({required String title, required String appUserId})
+  FrequentTodoListItem(
+      {required this.frequency,
+      required String title,
+      required String appUserId})
       : super(title: title, appUserId: appUserId);
 
   FrequentTodoListItem.fromMap(Map<String, dynamic> json)
-      : super._fromMap(json);
+      : frequency = Frequency.fromMap(json['frequency']),
+        super._fromMap(json);
+
+  @override
+  void toggleTaskCompletion() {
+    if (!isDone && !nextCreated) {
+      TodoListItem newItem = FrequentTodoListItem(
+          frequency: frequency, title: title, appUserId: appUserId);
+      newItem.startDate = frequency.getNextStartingTime();
+      Get.find<TodoListItemRepository>().saveItem(newItem);
+      nextCreated = true;
+    }
+    super.toggleTaskCompletion();
+  }
 }
 
 class SingleTodoListItem extends TodoListItem {

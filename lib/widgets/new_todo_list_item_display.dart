@@ -60,7 +60,9 @@ class _NewTodoListItemDisplayState extends State<NewTodoListItemDisplay> {
               TodoListItem item;
               switch (_type) {
                 case TodoListItemType.frequent:
+                  Frequency frequency = DailyFrequency(startingTimes: [0]);
                   item = FrequentTodoListItem(
+                    frequency: frequency,
                     title: _controller.text,
                     appUserId: Get.find<AuthProvider>().getUserId(),
                   );
