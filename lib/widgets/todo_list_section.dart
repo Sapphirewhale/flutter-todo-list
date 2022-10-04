@@ -39,18 +39,47 @@ class TodoListItemDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            item.title,
-            style: item.isDone
-                ? TextStyle(decoration: TextDecoration.lineThrough)
-                : null,
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.5,
+            child: Text(
+              item.title,
+              style: item.isDone
+                  ? TextStyle(decoration: TextDecoration.lineThrough)
+                  : null,
+            ),
           ),
           Checkbox(
               value: item.isDone,
               onChanged: (val) {
                 item.toggleTaskCompletion();
                 Get.find<TodoListItemRepository>().saveItem(item);
+              }),
+          InkWell(
+              child: Icon(Icons.delete),
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text("Delete ${item.title}?"),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                Get.find<TodoListItemRepository>()
+                                    .deleteItem(item);
+                                Navigator.of(context).pop();
+                              },
+                              child: Text("Delete")),
+                          TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text("Cancel")),
+                        ],
+                      );
+                    });
               })
         ],
       ),

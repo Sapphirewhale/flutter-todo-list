@@ -48,4 +48,13 @@ class TodoListItemRepository {
                 element.startDate.isBefore(DateTime.now()))
             .toList(growable: false));
   }
+
+  void deleteItem(TodoListItem item) {
+    firebase
+        .collection('users')
+        .doc(item.appUserId)
+        .collection('todoListItems')
+        .doc(item.id)
+        .delete();
+  }
 }
