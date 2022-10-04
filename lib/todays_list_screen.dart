@@ -13,38 +13,42 @@ class TodaysListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        StreamBuilder<List<TodoListItem>>(
-          stream: Get.find<TodoListItemRepository>()
-              .getTodaysItems(Get.find<AuthProvider>().getUserId()),
-          builder: ((context, snapshot) {
-            if (snapshot.hasData) {
-              return Column(
-                children: [
-                  TodaysProgressDisplay(items: snapshot.data!),
-                  TodoListSection(
-                      type: TodoListItemType.frequent,
-                      items: snapshot.data!
-                          .where((element) =>
-                              element.type == TodoListItemType.frequent)
-                          .toList()),
-                  TodoListSection(
-                      type: TodoListItemType.single,
-                      items: snapshot.data!
-                          .where((element) =>
-                              element.type == TodoListItemType.single)
-                          .toList()),
-                  TodoListSection(
-                      type: TodoListItemType.bonus,
-                      items: snapshot.data!
-                          .where((element) =>
-                              element.type == TodoListItemType.bonus)
-                          .toList()),
-                ],
-              );
-            } else {
-              return const CircularProgressIndicator();
-            }
-          }),
+        Expanded(
+          child: StreamBuilder<List<TodoListItem>>(
+            stream: Get.find<TodoListItemRepository>()
+                .getTodaysItems(Get.find<AuthProvider>().getUserId()),
+            builder: ((context, snapshot) {
+              if (snapshot.hasData) {
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      TodaysProgressDisplay(items: snapshot.data!),
+                      TodoListSection(
+                          type: TodoListItemType.frequent,
+                          items: snapshot.data!
+                              .where((element) =>
+                                  element.type == TodoListItemType.frequent)
+                              .toList()),
+                      TodoListSection(
+                          type: TodoListItemType.single,
+                          items: snapshot.data!
+                              .where((element) =>
+                                  element.type == TodoListItemType.single)
+                              .toList()),
+                      TodoListSection(
+                          type: TodoListItemType.bonus,
+                          items: snapshot.data!
+                              .where((element) =>
+                                  element.type == TodoListItemType.bonus)
+                              .toList()),
+                    ],
+                  ),
+                );
+              } else {
+                return const CircularProgressIndicator();
+              }
+            }),
+          ),
         ),
       ],
     );
