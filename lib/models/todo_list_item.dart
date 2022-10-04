@@ -81,11 +81,13 @@ class FrequentTodoListItem extends TodoListItem {
 
   FrequentTodoListItem.fromMap(Map<String, dynamic> json)
       : frequency = Frequency.fromMap(json['frequency']),
+        nextCreated = json['nextCreated'],
         super._fromMap(json);
 
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = super.toMap();
     data['frequency'] = frequency.toMap();
+    data['nextCreated'] = nextCreated;
     return data;
   }
 
