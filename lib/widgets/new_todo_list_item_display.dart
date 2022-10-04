@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:tame_the_beast/auth_provider.dart';
 import 'package:tame_the_beast/models/todo_list_item.dart';
 import 'package:tame_the_beast/repositories/todo_list_item_repository.dart';
+import 'package:weekday_selector/weekday_selector.dart';
 
 class NewTodoListItemDisplay extends StatefulWidget {
   TodoListItemType initialType;
@@ -16,6 +17,8 @@ class NewTodoListItemDisplay extends StatefulWidget {
 class _NewTodoListItemDisplayState extends State<NewTodoListItemDisplay> {
   final TextEditingController _controller = TextEditingController();
   TodoListItemType _type = TodoListItemType.frequent;
+  FrequencyType _frequency = FrequencyType.daily;
+  List<int> frequencyList = [1];
 
   @override
   void initState() {
@@ -50,6 +53,47 @@ class _NewTodoListItemDisplayState extends State<NewTodoListItemDisplay> {
             controller: _controller,
             decoration: InputDecoration(hintText: 'Enter a title'),
           ),
+          if (_type == TodoListItemType.frequent)
+            Row(
+              children: [
+                for (var frequency in FrequencyType.values)
+                  Expanded(
+                    child: RadioListTile<FrequencyType>(
+                      title: Text(frequency.name),
+                      value: frequency,
+                      groupValue: _frequency,
+                      onChanged: (val) {
+                        setState(() {
+                          _frequency = val!;
+                          frequencyList = [1];
+                        });
+                      },
+                    ),
+                  )
+              ],
+            ),
+          if (_type == TodoListItemType.frequent &&
+              _frequency == FrequencyType.weekly)
+            WeekdaySelector(
+                onChanged: (day) => setState(() {
+                      if (frequencyList.contains(day)) {
+                        if (frequencyList.length > 1) frequencyList.remove(day);
+                      } else {
+                        frequencyList.add(day);
+                      }
+                    }),
+                values: [
+                  frequencyList.contains(7),
+                  frequencyList.contains(1),
+                  frequencyList.contains(2),
+                  frequencyList.contains(3),
+                  frequencyList.contains(4),
+                  frequencyList.contains(5),
+                  frequencyList.contains(6),
+                ]),
+          if (_type == TodoListItemType.frequent &&
+              _frequency == FrequencyType.daily)
+            Container() // TODO Add time selection display
         ],
       ),
       actions: [
@@ -60,7 +104,9 @@ class _NewTodoListItemDisplayState extends State<NewTodoListItemDisplay> {
               TodoListItem item;
               switch (_type) {
                 case TodoListItemType.frequent:
-                  Frequency frequency = DailyFrequency(startingTimes: [0]);
+                  Frequency frequency = _frequency == FrequencyType.daily
+                      ? DailyFrequency(startingTimes: frequencyList)
+                      : WeeklyFrequency(startingTimes: frequencyList);
                   item = FrequentTodoListItem(
                     frequency: frequency,
                     title: _controller.text,
