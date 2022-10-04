@@ -83,6 +83,12 @@ class FrequentTodoListItem extends TodoListItem {
       : frequency = Frequency.fromMap(json['frequency']),
         super._fromMap(json);
 
+  Map<String, dynamic> toMap() {
+    final Map<String, dynamic> data = super.toMap();
+    data['frequency'] = frequency.toMap();
+    return data;
+  }
+
   @override
   void toggleTaskCompletion() {
     if (!isDone && !nextCreated) {
@@ -181,9 +187,11 @@ abstract class Frequency {
   static Frequency fromMap(Map<String, dynamic> json) {
     switch (FrequencyTypeUtils.fromString(json['type'])) {
       case FrequencyType.daily:
-        return DailyFrequency(startingTimes: json['startingTimes']);
+        return DailyFrequency(
+            startingTimes: List<int>.from(json['startingTimes']));
       case FrequencyType.weekly:
-        return WeeklyFrequency(startingTimes: json['startingTimes']);
+        return WeeklyFrequency(
+            startingTimes: List<int>.from(json['startingTimes']));
       default:
         throw Exception('Invalid type');
     }
