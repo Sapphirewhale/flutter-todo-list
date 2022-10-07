@@ -224,7 +224,7 @@ class DailyFrequency extends Frequency {
 
 class WeeklyFrequency extends Frequency {
   @override
-  FrequencyType type = FrequencyType.daily;
+  FrequencyType type = FrequencyType.weekly;
 
   WeeklyFrequency({required List<int> startingTimes})
       : super(startingTimes: startingTimes);
