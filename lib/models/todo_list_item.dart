@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tame_the_beast/repositories/todo_list_item_repository.dart';
+import 'package:tame_the_beast/theme.dart';
 
 abstract class TodoListItem {
   String id;
@@ -162,11 +163,11 @@ extension TodoListItemTypeUtils on TodoListItemType {
   Color get color {
     switch (this) {
       case TodoListItemType.frequent:
-        return Colors.blue;
+        return TTBTheme.frequentTaskColor;
       case TodoListItemType.single:
-        return Colors.brown;
+        return TTBTheme.singleTaskColor;
       case TodoListItemType.bonus:
-        return Colors.red;
+        return TTBTheme.bonusTaskColor;
     }
   }
 }

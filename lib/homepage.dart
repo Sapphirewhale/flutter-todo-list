@@ -16,6 +16,10 @@ class MyApp extends StatelessWidget {
       scrollBehavior: AppScrollBehavior(),
       theme: ThemeData(
         primarySwatch: TTBTheme.primary,
+        secondaryHeaderColor: TTBTheme.secondary,
+        canvasColor: TTBTheme.background,
+        scaffoldBackgroundColor: TTBTheme.background,
+        textTheme: TTBTheme.textTheme,
       ),
       home: const MyHomePage(title: 'Tame the Beast'),
     );

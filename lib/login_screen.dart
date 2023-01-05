@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tame_the_beast/repositories/user_repository.dart';
+import 'package:tame_the_beast/theme.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -18,36 +19,43 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width / 3,
-      child: Column(
-        children: [
-          const Text("Email:"),
-          TextField(
-            controller: _emailController,
-          ),
-          if (!loggingIn) const Text("Username:"),
-          if (!loggingIn)
+    return Container(
+      padding: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30),
+        color: TTBTheme.transparentWhite,
+      ),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width / 3,
+        child: Column(
+          children: [
+            const Text("Email:"),
             TextField(
-              controller: _usernameController,
+              controller: _emailController,
             ),
-          const Text("Password:"),
-          TextField(
-            obscureText: true,
-            controller: _passwordController,
-          ),
-          ElevatedButton(
-            onPressed: () => (loggingIn ? login() : register()),
-            child: Text(loggingIn ? "Log In" : "Register"),
-          ),
-          InkWell(
-              child: Text(loggingIn
-                  ? "Don't have an account?"
-                  : "Already have an account?"),
-              onTap: () => setState(
-                    () => loggingIn = !loggingIn,
-                  )),
-        ],
+            if (!loggingIn) const Text("Username:"),
+            if (!loggingIn)
+              TextField(
+                controller: _usernameController,
+              ),
+            const Text("Password:"),
+            TextField(
+              obscureText: true,
+              controller: _passwordController,
+            ),
+            ElevatedButton(
+              onPressed: () => (loggingIn ? login() : register()),
+              child: Text(loggingIn ? "Log In" : "Register"),
+            ),
+            InkWell(
+                child: Text(loggingIn
+                    ? "Don't have an account?"
+                    : "Already have an account?"),
+                onTap: () => setState(
+                      () => loggingIn = !loggingIn,
+                    )),
+          ],
+        ),
       ),
     );
   }

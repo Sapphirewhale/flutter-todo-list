@@ -19,13 +19,28 @@ class TodoListSection extends StatelessWidget {
     return Column(
       children: [
         TodoListTitleDisplay(type: type, count: items.length),
-        for (var item in items.where((element) => !element.isDone))
-          TodoListItemDisplay(item: item),
-        for (var item in items.where((element) =>
-            element.isDone &&
-            element.completionDate!
-                .isAfter(DateTime(now.year, now.month, now.day))))
-          TodoListItemDisplay(item: item)
+        if (items.isNotEmpty)
+          Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
+              ),
+              color: TTBTheme.transparentWhite,
+            ),
+            child: Column(
+              children: [
+                for (var item in items.where((element) => !element.isDone))
+                  TodoListItemDisplay(item: item),
+                for (var item in items.where((element) =>
+                    element.isDone &&
+                    element.completionDate!
+                        .isAfter(DateTime(now.year, now.month, now.day))))
+                  TodoListItemDisplay(item: item)
+              ],
+            ),
+          )
       ],
     );
   }
