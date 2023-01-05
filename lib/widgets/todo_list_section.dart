@@ -125,7 +125,10 @@ class TodoListTitleDisplay extends StatelessWidget {
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: type.color,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+          ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

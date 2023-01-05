@@ -23,6 +23,7 @@ class TTBTheme {
 
   static Color background = const Color.fromRGBO(53, 56, 57, 1);
   static Color transparentWhite = Colors.white.withOpacity(0.5);
+  static Color transparentGrey = Colors.grey.withOpacity(0.5);
 
   static Color frequentTaskColor = const Color.fromRGBO(6, 214, 160, 1);
   static Color singleTaskColor = const Color.fromRGBO(255, 209, 102, 1);
